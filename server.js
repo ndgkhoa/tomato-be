@@ -5,6 +5,7 @@ import { connectDB } from './config/db.js'
 import foodRoutes from './routes/foodRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import cartRoutes from './routes/cartRoutes.js'
+import orderRouter from './routes/orderRoutes.js'
 
 const app = express()
 
@@ -16,6 +17,7 @@ app.use(cors())
 app.use('/api/food', foodRoutes)
 app.use('/api/user', userRoutes)
 app.use('/api/cart', cartRoutes)
+app.use('/api/order', orderRouter)
 app.use('/images', express.static('uploads'))
 
 connectDB()
