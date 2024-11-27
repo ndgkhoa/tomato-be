@@ -18,7 +18,7 @@ app.use('/api/food', foodRoutes)
 app.use('/api/user', userRoutes)
 app.use('/api/cart', cartRoutes)
 app.use('/api/order', orderRouter)
-app.use('/images', express.static('uploads'))
+//app.use('/images', express.static('uploads'))
 
 connectDB()
 

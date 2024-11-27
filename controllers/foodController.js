@@ -1,19 +1,21 @@
-import fs from 'fs'
 import Food from '../models/food.js'
+import cloudinary from '../config/cloudinary.js'
 
 export const FoodController = {
     createFood: async (req, res) => {
-        let image_filename = req.file.filename
-
-        const newFood = new Food({
-            name: req.body.name,
-            description: req.body.description,
-            price: req.body.price,
-            category: req.body.category,
-            image: image_filename,
-        })
         try {
+            const imageUrl = req.file.path
+
+            const newFood = new Food({
+                name: req.body.name,
+                description: req.body.description,
+                price: req.body.price,
+                category: req.body.category,
+                image: imageUrl,
+            })
+
             await newFood.save()
+
             res.status(201).json({
                 success: true,
                 message: 'Food added successfully',
@@ -53,7 +55,17 @@ export const FoodController = {
 
         try {
             const food = await Food.findById(id)
-            fs.unlink(`uploads/${food.image}`, () => {})
+
+            if (!food) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Food not found',
+                })
+            }
+
+            const publicId = food.image.split('/').pop().split('.')[0]
+            await cloudinary.uploader.destroy(`foods/${publicId}`)
+
             await Food.findByIdAndDelete(id)
 
             res.status(200).json({
