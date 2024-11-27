@@ -3,6 +3,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import { connectDB } from './config/db.js'
 import foodRoutes from './routes/foodRoutes.js'
+import userRoutes from './routes/userRoutes.js'
 
 const app = express()
 
@@ -12,6 +13,8 @@ app.use(express.json())
 app.use(cors())
 
 app.use('/api/food', foodRoutes)
+app.use('/api/user', userRoutes)
+app.use('/images', express.static('uploads'))
 
 connectDB()
 
